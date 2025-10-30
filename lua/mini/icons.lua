@@ -1001,6 +1001,7 @@ H.file_icons = {
   ['.rgignore']        = { glyph = '󰒓', hl = 'MiniIconsYellow' },
   ['.vscodeignore']    = { glyph = '', hl = 'MiniIconsAzure' },
   ['.env']             = { glyph = '', hl = 'MiniIconsYellow' },
+  ['.rubocop.yml']     = { glyph = '', hl = 'MiniIconsGrey' },
 }
 
 -- Filetype icons. Keys are filetypes explicitly supported by Neovim core
@@ -1660,7 +1661,7 @@ H.filetype_icons = {
   rrst                   = { glyph = '󰫿', hl = 'MiniIconsGreen'  },
   rst                    = { glyph = '󰊄', hl = 'MiniIconsYellow' },
   rtf                    = { glyph = '󰚞', hl = 'MiniIconsAzure'  },
-  ruby                   = { glyph = '󰴭', hl = 'MiniIconsRed'    },
+  ruby                   = { glyph = '', hl = 'MiniIconsRed'    },
   rust                   = { glyph = '󱘗', hl = 'MiniIconsOrange' },
   sage                   = { glyph = '󰘨', hl = 'MiniIconsPurple' },
   salt                   = { glyph = '󰬀', hl = 'MiniIconsCyan'   },
