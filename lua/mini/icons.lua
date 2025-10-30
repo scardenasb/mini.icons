@@ -1286,6 +1286,7 @@ H.filetype_icons = {
   gdshader               = { glyph = '', hl = 'MiniIconsPurple' },
   gedcom                 = { glyph = '󰫴', hl = 'MiniIconsRed'    },
   gemtext                = { glyph = '󰪁', hl = 'MiniIconsAzure'  },
+  gemfile                = { glyph = '', hl = {fg='#701516',bg=''}  },
   gift                   = { glyph = '󰹄', hl = 'MiniIconsRed'    },
   git                    = { glyph = '󰊢', hl = 'MiniIconsOrange' },
   gitattributes          = { glyph = '󰊢', hl = 'MiniIconsYellow' },
