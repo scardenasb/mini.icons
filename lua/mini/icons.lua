@@ -1236,7 +1236,6 @@ H.filetype_icons = {
   elmfilt                = { glyph = '󰫲', hl = 'MiniIconsBlue'   },
   elsa                   = { glyph = '󰘧', hl = 'MiniIconsGreen'  },
   elvish                 = { glyph = '', hl = 'MiniIconsGreen'  },
-  env                    = { glyph = '', hl = 'MiniIconsYellow' },
   epuppet                = { glyph = '', hl = 'MiniIconsYellow' },
   erlang                 = { glyph = '', hl = 'MiniIconsRed'    },
   eruby                  = { glyph = '󰴭', hl = 'MiniIconsOrange' },
