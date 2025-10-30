@@ -748,7 +748,7 @@ H.cache_index_lookup = {}
 H.default_icons = {
   default   = { glyph = '󰟢', hl = 'MiniIconsGrey'   },
   -- directory = { glyph = '󰉋', hl = 'MiniIconsAzure'  },
-  directory = { glyph = '󰉋', hl = {fg='#d19a55'}  },
+  directory = { glyph = '󰉋', hl = {fg='#d19a55', bg=''}  },
   extension = { glyph = '󰈔', hl = 'MiniIconsGrey'   },
   file      = { glyph = '󰈔', hl = 'MiniIconsGrey'   },
   filetype  = { glyph = '󰈔', hl = 'MiniIconsGrey'   },
