@@ -747,7 +747,8 @@ H.cache_index_lookup = {}
 --stylua: ignore
 H.default_icons = {
   default   = { glyph = '󰟢', hl = 'MiniIconsGrey'   },
-  directory = { glyph = '󰉋', hl = 'MiniIconsAzure'  },
+  -- directory = { glyph = '󰉋', hl = 'MiniIconsAzure'  },
+  directory = { glyph = '󰉋', hl = 'NvimTreeModifiedIcon'  },
   extension = { glyph = '󰈔', hl = 'MiniIconsGrey'   },
   file      = { glyph = '󰈔', hl = 'MiniIconsGrey'   },
   filetype  = { glyph = '󰈔', hl = 'MiniIconsGrey'   },
