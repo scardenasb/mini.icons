@@ -962,6 +962,7 @@ H.file_icons = {
   ['GNUmakefile.am']      = 'automake',
   ['Makefile.am']         = 'automake',
   ['Makefile']            = 'automake',
+  ['Gemfile']             = 'gemfile',
   ['makefile.am']         = 'automake',
   ['CMakeLists.txt']      = 'cmake',
   ['CMakeCache.txt']      = 'cmakecache',
