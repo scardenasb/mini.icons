@@ -999,6 +999,7 @@ H.file_icons = {
   ['.prettierignore']  = { glyph = '', hl = 'MiniIconsOrange' },
   ['.rgignore']        = { glyph = '󰒓', hl = 'MiniIconsYellow' },
   ['.vscodeignore']    = { glyph = '', hl = 'MiniIconsAzure' },
+  ['.env']             = { glyph = '', hl = 'MiniIconsYellow' },
 }
 
 -- Filetype icons. Keys are filetypes explicitly supported by Neovim core
