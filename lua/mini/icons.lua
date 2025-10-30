@@ -747,7 +747,7 @@ H.cache_index_lookup = {}
 --stylua: ignore
 H.default_icons = {
   default   = { glyph = '󰟢', hl = 'MiniIconsGrey'   },
-  directory = { glyph = '󰉋', hl = {fg='', bg='#D19A55'}},
+  directory = { glyph = '󰉋', hl = {fg='#D19A55', bg=''}},
   extension = { glyph = '󰈔', hl = 'MiniIconsGrey'   },
   file      = { glyph = '󰈔', hl = 'MiniIconsGrey'   },
   filetype  = { glyph = '󰈔', hl = 'MiniIconsGrey'   },
