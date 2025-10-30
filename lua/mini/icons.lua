@@ -183,20 +183,20 @@ local H = {}
 ---   require('mini.icons').setup({}) -- replace {} with your config table
 --- <
 MiniIcons.setup = function(config)
-  -- Export module
-  _G.MiniIcons = MiniIcons
+	-- Export module
+	_G.MiniIcons = MiniIcons
 
-  -- Setup config
-  config = H.setup_config(config)
+	-- Setup config
+	config = H.setup_config(config)
 
-  -- Apply config
-  H.apply_config(config)
+	-- Apply config
+	H.apply_config(config)
 
-  -- Define behavior
-  H.create_autocommands()
+	-- Define behavior
+	H.create_autocommands()
 
-  -- Create default highlighting
-  H.create_default_hl()
+	-- Create default highlighting
+	H.create_default_hl()
 end
 
 --stylua: ignore
@@ -458,27 +458,31 @@ MiniIcons.config = {
 ---   local icon, hl, is_default = MiniIcons.get('file', 'not-supported')
 --- <
 MiniIcons.get = function(category, name)
-  if not (type(category) == 'string' and type(name) == 'string') then
-    H.error('Both `category` and `name` should be string.')
-  end
+	if not (type(category) == "string" and type(name) == "string") then
+		H.error("Both `category` and `name` should be string.")
+	end
 
-  -- Get "get" implementation now to show informative message for bad category
-  local getter = H.get_impl[category]
-  if getter == nil then H.error(vim.inspect(category) .. ' is not a supported category.') end
+	-- Get "get" implementation now to show informative message for bad category
+	local getter = H.get_impl[category]
+	if getter == nil then
+		H.error(vim.inspect(category) .. " is not a supported category.")
+	end
 
-  -- Try cache first
-  name = category == 'file' and name or (category == 'directory' and H.fs_basename(name) or name:lower())
-  local cached = H.cache_get(category, name)
-  if cached ~= nil then return cached[1], cached[2], cached[3] == true end
+	-- Try cache first
+	name = category == "file" and name or (category == "directory" and H.fs_basename(name) or name:lower())
+	local cached = H.cache_get(category, name)
+	if cached ~= nil then
+		return cached[1], cached[2], cached[3] == true
+	end
 
-  -- Get icon. Assume `nil` value to mean "fall back to category default".
-  local icon, hl = getter(name)
-  if type(icon) == 'table' then
-    icon, hl = H.style_icon(icon.glyph, name), icon.hl
-  end
+	-- Get icon. Assume `nil` value to mean "fall back to category default".
+	local icon, hl = getter(name)
+	if type(icon) == "table" then
+		icon, hl = H.style_icon(icon.glyph, name), icon.hl
+	end
 
-  -- Save to cache and return
-  return H.cache_set(category, name, icon, hl)
+	-- Save to cache and return
+	return H.cache_set(category, name, icon, hl)
 end
 
 --- List explicitly supported icon names
@@ -489,21 +493,23 @@ end
 ---   Note, that `'file'` and `'extension'` categories support much more icon names
 ---   via their fallback to using |vim.filetype.match()| with `'filetype'` category.
 MiniIcons.list = function(category)
-  local category_icons = H[category .. '_icons']
-  if category_icons == nil then H.error(vim.inspect(category) .. ' is not a supported category.') end
+	local category_icons = H[category .. "_icons"]
+	if category_icons == nil then
+		H.error(vim.inspect(category) .. " is not a supported category.")
+	end
 
-  -- Output is a union of explicit built-in and custom icons
-  local res_map = {}
-  for k, _ in pairs(category_icons) do
-    res_map[k] = true
-  end
-  for k, _ in pairs(MiniIcons.config[category]) do
-    res_map[k] = true
-  end
+	-- Output is a union of explicit built-in and custom icons
+	local res_map = {}
+	for k, _ in pairs(category_icons) do
+		res_map[k] = true
+	end
+	for k, _ in pairs(MiniIcons.config[category]) do
+		res_map[k] = true
+	end
 
-  local res = vim.tbl_keys(res_map)
-  table.sort(res)
-  return res
+	local res = vim.tbl_keys(res_map)
+	table.sort(res)
+	return res
 end
 
 --- Mock 'nvim-web-devicons' module
@@ -523,103 +529,149 @@ end
 --- Works without installed 'nvim-web-devicons' and even with it installed (needs
 --- to be called after 'nvim-web-devicons' is set up).
 MiniIcons.mock_nvim_web_devicons = function()
-  local M = {}
+	local M = {}
 
-  -- Main functions which get icon and highlight group
-  M.get_icon = function(name, ext, opts)
-    -- Preferring 'name' first leads to a slightly different behavior compared to
-    -- the original in case both `name` and `ext` is supplied:
-    -- - Original: try exact `name`, then `ext`, then extensions in `name`.
-    -- - This: use 'file' category and ignore `ext` completely.
-    -- In practice this seems like a better choice because it accounts for
-    -- special file names at the cost of ignoring `ext` if it conflicts with
-    -- `name` (which rarely happens) and very small overhead of recomputing
-    -- extension (which assumed to already be computed by the caller).
-    local is_file = type(name) == 'string'
-    local category = is_file and 'file' or 'extension'
-    local icon, hl, is_default = MiniIcons.get(category, is_file and name or ext)
-    if is_default and not (opts or {}).default then return nil, nil end
-    return icon, hl
-  end
+	-- Main functions which get icon and highlight group
+	M.get_icon = function(name, ext, opts)
+		-- Preferring 'name' first leads to a slightly different behavior compared to
+		-- the original in case both `name` and `ext` is supplied:
+		-- - Original: try exact `name`, then `ext`, then extensions in `name`.
+		-- - This: use 'file' category and ignore `ext` completely.
+		-- In practice this seems like a better choice because it accounts for
+		-- special file names at the cost of ignoring `ext` if it conflicts with
+		-- `name` (which rarely happens) and very small overhead of recomputing
+		-- extension (which assumed to already be computed by the caller).
+		local is_file = type(name) == "string"
+		local category = is_file and "file" or "extension"
+		local icon, hl, is_default = MiniIcons.get(category, is_file and name or ext)
+		if is_default and not (opts or {}).default then
+			return nil, nil
+		end
+		return icon, hl
+	end
 
-  M.get_icon_by_filetype = function(ft, opts)
-    local icon, hl, is_default = MiniIcons.get('filetype', ft)
-    if is_default and not (opts or {}).default then return nil, nil end
-    return icon, hl
-  end
+	M.get_icon_by_filetype = function(ft, opts)
+		local icon, hl, is_default = MiniIcons.get("filetype", ft)
+		if is_default and not (opts or {}).default then
+			return nil, nil
+		end
+		return icon, hl
+	end
 
-  -- Use default colors of default icon (#6d8086 and 66) by default
-  local get_hl_data = function(...) return vim.api.nvim_get_hl_by_name(...) end
-  local get_hex = function(hl)
-    if hl == nil then return nil end
-    return string.format('#%06x', get_hl_data(hl, true).foreground or 7176326)
-  end
-  local get_cterm = function(hl)
-    if hl == nil then return nil end
-    return get_hl_data(hl, false).foreground or 66
-  end
-  local with_hex = function(icon, hl) return icon, get_hex(hl) end
-  local with_cterm = function(icon, hl) return icon, get_cterm(hl) end
-  local with_hex_cterm = function(icon, hl) return icon, get_hex(hl), get_cterm(hl) end
+	-- Use default colors of default icon (#6d8086 and 66) by default
+	local get_hl_data = function(...)
+		return vim.api.nvim_get_hl_by_name(...)
+	end
+	local get_hex = function(hl)
+		if hl == nil then
+			return nil
+		end
+		return string.format("#%06x", get_hl_data(hl, true).foreground or 7176326)
+	end
+	local get_cterm = function(hl)
+		if hl == nil then
+			return nil
+		end
+		return get_hl_data(hl, false).foreground or 66
+	end
+	local with_hex = function(icon, hl)
+		return icon, get_hex(hl)
+	end
+	local with_cterm = function(icon, hl)
+		return icon, get_cterm(hl)
+	end
+	local with_hex_cterm = function(icon, hl)
+		return icon, get_hex(hl), get_cterm(hl)
+	end
 
-  M.get_icon_color = function(...) return with_hex(M.get_icon(...)) end
-  M.get_icon_cterm_color = function(...) return with_cterm(M.get_icon(...)) end
-  M.get_icon_colors = function(...) return with_hex_cterm(M.get_icon(...)) end
+	M.get_icon_color = function(...)
+		return with_hex(M.get_icon(...))
+	end
+	M.get_icon_cterm_color = function(...)
+		return with_cterm(M.get_icon(...))
+	end
+	M.get_icon_colors = function(...)
+		return with_hex_cterm(M.get_icon(...))
+	end
 
-  M.get_icon_color_by_filetype = function(...) return with_hex(M.get_icon_by_filetype(...)) end
-  M.get_icon_cterm_color_by_filetype = function(...) return with_cterm(M.get_icon_by_filetype(...)) end
-  M.get_icon_colors_by_filetype = function(...) return with_hex_cterm(M.get_icon_by_filetype(...)) end
+	M.get_icon_color_by_filetype = function(...)
+		return with_hex(M.get_icon_by_filetype(...))
+	end
+	M.get_icon_cterm_color_by_filetype = function(...)
+		return with_cterm(M.get_icon_by_filetype(...))
+	end
+	M.get_icon_colors_by_filetype = function(...)
+		return with_hex_cterm(M.get_icon_by_filetype(...))
+	end
 
-  M.get_icon_name_by_filetype = function(ft) return ft end
+	M.get_icon_name_by_filetype = function(ft)
+		return ft
+	end
 
-  -- Mock `get_icons_*()` to the extent they are compatible with this module
-  local make_icon_tbl = function(category, name, output_name)
-    local icon, hl = MiniIcons.get(category, name)
-    return { icon = icon, color = get_hex(hl), cterm_color = tostring(get_cterm(hl)), name = output_name }
-  end
-  local make_category_tbl = function(category)
-    local res = {}
-    -- This won't list all supported names (due to fallback), but at least some
-    for _, name in ipairs(MiniIcons.list(category)) do
-      res[name] = make_icon_tbl(category, name, name)
-    end
-    return res
-  end
+	-- Mock `get_icons_*()` to the extent they are compatible with this module
+	local make_icon_tbl = function(category, name, output_name)
+		local icon, hl = MiniIcons.get(category, name)
+		return { icon = icon, color = get_hex(hl), cterm_color = tostring(get_cterm(hl)), name = output_name }
+	end
+	local make_category_tbl = function(category)
+		local res = {}
+		-- This won't list all supported names (due to fallback), but at least some
+		for _, name in ipairs(MiniIcons.list(category)) do
+			res[name] = make_icon_tbl(category, name, name)
+		end
+		return res
+	end
 
-  M.get_default_icon = function() return make_icon_tbl('default', 'file', 'Default') end
+	M.get_default_icon = function()
+		return make_icon_tbl("default", "file", "Default")
+	end
 
-  M.get_icons = function()
-    return vim.tbl_deep_extend(
-      'force',
-      { [1] = M.get_default_icon() },
-      make_category_tbl('os'),
-      make_category_tbl('file'),
-      make_category_tbl('extension')
-    )
-  end
-  M.get_icons_by_desktop_environment = function() return {} end
-  M.get_icons_by_extension = function() return make_category_tbl('extension') end
-  M.get_icons_by_filename = function() return make_category_tbl('file') end
-  M.get_icons_by_operating_system = function() return make_category_tbl('os') end
-  M.get_icons_by_window_manager = function() return {} end
+	M.get_icons = function()
+		return vim.tbl_deep_extend(
+			"force",
+			{ [1] = M.get_default_icon() },
+			make_category_tbl("os"),
+			make_category_tbl("file"),
+			make_category_tbl("extension")
+		)
+	end
+	M.get_icons_by_desktop_environment = function()
+		return {}
+	end
+	M.get_icons_by_extension = function()
+		return make_category_tbl("extension")
+	end
+	M.get_icons_by_filename = function()
+		return make_category_tbl("file")
+	end
+	M.get_icons_by_operating_system = function()
+		return make_category_tbl("os")
+	end
+	M.get_icons_by_window_manager = function()
+		return {}
+	end
 
-  -- Should be no need in the these. Suggest using `MiniIcons.setup()`.
-  M.has_loaded = function() return true end
-  M.refresh = function() end
-  M.set_default_icon = function() end
-  M.set_icon = function() end
-  M.set_icon_by_filetype = function() end
-  M.set_up_highlights = function() end
-  M.setup = function() end
+	-- Should be no need in the these. Suggest using `MiniIcons.setup()`.
+	M.has_loaded = function()
+		return true
+	end
+	M.refresh = function() end
+	M.set_default_icon = function() end
+	M.set_icon = function() end
+	M.set_icon_by_filetype = function() end
+	M.set_up_highlights = function() end
+	M.setup = function() end
 
-  -- Mock. Prefer `package.preload` as it seems to be a better practice.
-  local modname = 'nvim-web-devicons'
-  if package.loaded[modname] == nil then
-    package.preload[modname] = function() return M end
-  else
-    package.loaded[modname] = M
-  end
-  vim.g.nvim_web_devicons = 1
+	-- Mock. Prefer `package.preload` as it seems to be a better practice.
+	local modname = "nvim-web-devicons"
+	if package.loaded[modname] == nil then
+		package.preload[modname] = function()
+			return M
+		end
+	else
+		package.loaded[modname] = M
+	end
+	vim.g.nvim_web_devicons = 1
 end
 
 --- Tweak built-in LSP kind names
@@ -643,20 +695,34 @@ end
 --- <
 ---@param mode string|nil One of "prepend" (default), "append", "replace".
 MiniIcons.tweak_lsp_kind = function(mode)
-  mode = mode or 'prepend'
-  local format
-  if mode == 'append' then format = function(kind) return kind .. ' ' .. MiniIcons.get('lsp', kind) end end
-  if mode == 'prepend' then format = function(kind) return MiniIcons.get('lsp', kind) .. ' ' .. kind end end
-  if mode == 'replace' then format = function(kind) return MiniIcons.get('lsp', kind) end end
-  if format == nil then H.error('`mode` should be one of "append", "prepend", "replace".') end
+	mode = mode or "prepend"
+	local format
+	if mode == "append" then
+		format = function(kind)
+			return kind .. " " .. MiniIcons.get("lsp", kind)
+		end
+	end
+	if mode == "prepend" then
+		format = function(kind)
+			return MiniIcons.get("lsp", kind) .. " " .. kind
+		end
+	end
+	if mode == "replace" then
+		format = function(kind)
+			return MiniIcons.get("lsp", kind)
+		end
+	end
+	if format == nil then
+		H.error('`mode` should be one of "append", "prepend", "replace".')
+	end
 
-  local protocol = vim.lsp.protocol
-  for i, kind in ipairs(protocol.CompletionItemKind) do
-    protocol.CompletionItemKind[i] = format(kind)
-  end
-  for i, kind in ipairs(protocol.SymbolKind) do
-    protocol.SymbolKind[i] = format(kind)
-  end
+	local protocol = vim.lsp.protocol
+	for i, kind in ipairs(protocol.CompletionItemKind) do
+		protocol.CompletionItemKind[i] = format(kind)
+	end
+	for i, kind in ipairs(protocol.SymbolKind) do
+		protocol.SymbolKind[i] = format(kind)
+	end
 end
 
 -- Helper data ================================================================
@@ -895,6 +961,7 @@ H.file_icons = {
   ['build.xml']           = 'ant',
   ['GNUmakefile.am']      = 'automake',
   ['Makefile.am']         = 'automake',
+  ['Makefile']            = 'automake',
   ['makefile.am']         = 'automake',
   ['CMakeLists.txt']      = 'cmake',
   ['CMakeCache.txt']      = 'cmakecache',
@@ -1959,32 +2026,32 @@ H.os_icons = {
 -- Helper functionality =======================================================
 -- Settings -------------------------------------------------------------------
 H.setup_config = function(config)
-  H.check_type('config', config, 'table', true)
-  config = vim.tbl_deep_extend('force', vim.deepcopy(H.default_config), config or {})
+	H.check_type("config", config, "table", true)
+	config = vim.tbl_deep_extend("force", vim.deepcopy(H.default_config), config or {})
 
-  H.check_type('style', config.style, 'string')
-  H.check_type('default', config.default, 'table')
-  H.check_type('directory', config.directory, 'table')
-  H.check_type('extension', config.extension, 'table')
-  H.check_type('file', config.file, 'table')
-  H.check_type('filetype', config.filetype, 'table')
-  H.check_type('lsp', config.lsp, 'table')
-  H.check_type('os', config.os, 'table')
-  H.check_type('use_file_extension', config.use_file_extension, 'function')
+	H.check_type("style", config.style, "string")
+	H.check_type("default", config.default, "table")
+	H.check_type("directory", config.directory, "table")
+	H.check_type("extension", config.extension, "table")
+	H.check_type("file", config.file, "table")
+	H.check_type("filetype", config.filetype, "table")
+	H.check_type("lsp", config.lsp, "table")
+	H.check_type("os", config.os, "table")
+	H.check_type("use_file_extension", config.use_file_extension, "function")
 
-  return config
+	return config
 end
 
 H.apply_config = function(config)
-  MiniIcons.config = config
+	MiniIcons.config = config
 
-  -- Initialize cache for quicker `get()`
-  H.init_cache(config)
+	-- Initialize cache for quicker `get()`
+	H.init_cache(config)
 end
 
 H.create_autocommands = function()
-  local gr = vim.api.nvim_create_augroup('MiniIcons', {})
-  vim.api.nvim_create_autocmd('ColorScheme', { group = gr, callback = H.create_default_hl, desc = 'Ensure colors' })
+	local gr = vim.api.nvim_create_augroup("MiniIcons", {})
+	vim.api.nvim_create_autocmd("ColorScheme", { group = gr, callback = H.create_default_hl, desc = "Ensure colors" })
 end
 
 --stylua: ignore
@@ -2007,168 +2074,212 @@ end
 
 -- Cache ----------------------------------------------------------------------
 H.init_cache = function(config)
-  -- NOTE: process in 'filetype' - 'extension' - 'file' order because previous
-  -- might be used to infer missing data in the next
-  local categories = { 'directory', 'filetype', 'extension', 'file', 'lsp', 'os' }
+	-- NOTE: process in 'filetype' - 'extension' - 'file' order because previous
+	-- might be used to infer missing data in the next
+	local categories = { "directory", "filetype", "extension", "file", "lsp", "os" }
 
-  H.cache, H.cache_index, H.cache_index_lookup = { default = {} }, {}, {}
-  for _, cat in ipairs(categories) do
-    -- Set "default" category
-    local icon_def, hl_def = H.resolve_icon_data('default', cat, config.default[cat])
-    H.cache_set('default', cat, icon_def, hl_def)
+	H.cache, H.cache_index, H.cache_index_lookup = { default = {} }, {}, {}
+	for _, cat in ipairs(categories) do
+		-- Set "default" category
+		local icon_def, hl_def = H.resolve_icon_data("default", cat, config.default[cat])
+		H.cache_set("default", cat, icon_def, hl_def)
 
-    -- Set custom icons while ensuring proper "fallback" category index entry
-    table.insert(H.cache_index, { icon_def, hl_def, true })
-    H.cache[cat] = { [true] = #H.cache_index }
-    for name, icon_data in pairs(config[cat]) do
-      local icon, hl = H.resolve_icon_data(cat, name, icon_data)
-      H.cache_set(cat, name, icon, hl)
-    end
-  end
-  local icon_def_def, hl_def_def = H.resolve_icon_data('default', 'default', config.default.default)
-  H.cache_set('default', 'default', icon_def_def, hl_def_def)
+		-- Set custom icons while ensuring proper "fallback" category index entry
+		table.insert(H.cache_index, { icon_def, hl_def, true })
+		H.cache[cat] = { [true] = #H.cache_index }
+		for name, icon_data in pairs(config[cat]) do
+			local icon, hl = H.resolve_icon_data(cat, name, icon_data)
+			H.cache_set(cat, name, icon, hl)
+		end
+	end
+	local icon_def_def, hl_def_def = H.resolve_icon_data("default", "default", config.default.default)
+	H.cache_set("default", "default", icon_def_def, hl_def_def)
 end
 
 H.resolve_icon_data = function(category, name, icon_data)
-  if type(name) ~= 'string' then return nil end
+	if type(name) ~= "string" then
+		return nil
+	end
 
-  icon_data = type(icon_data) == 'table' and icon_data or {}
-  local glyph, hl = icon_data.glyph, icon_data.hl
+	icon_data = type(icon_data) == "table" and icon_data or {}
+	local glyph, hl = icon_data.glyph, icon_data.hl
 
-  -- Allow customizing only one characteristic with proper fallback
-  local has_glyph, has_hl = type(glyph) == 'string', type(hl) == 'string'
-  local builtin_glyph, builtin_hl = '', ''
-  if not (has_glyph and has_hl) then
-    if category == 'default' then
-      builtin_glyph, builtin_hl = H.default_icons[name].glyph, H.default_icons[name].hl
-    else
-      builtin_glyph, builtin_hl = MiniIcons.get(category, name)
-    end
-  end
-  return H.style_icon(has_glyph and glyph or builtin_glyph, name), has_hl and hl or builtin_hl
+	-- Allow customizing only one characteristic with proper fallback
+	local has_glyph, has_hl = type(glyph) == "string", type(hl) == "string"
+	local builtin_glyph, builtin_hl = "", ""
+	if not (has_glyph and has_hl) then
+		if category == "default" then
+			builtin_glyph, builtin_hl = H.default_icons[name].glyph, H.default_icons[name].hl
+		else
+			builtin_glyph, builtin_hl = MiniIcons.get(category, name)
+		end
+	end
+	return H.style_icon(has_glyph and glyph or builtin_glyph, name), has_hl and hl or builtin_hl
 end
 
-H.cache_get = function(cat, name) return H.cache_index[H.cache[cat][name]] end
+H.cache_get = function(cat, name)
+	return H.cache_index[H.cache[cat][name]]
+end
 
 H.cache_set = function(cat, name, icon, hl)
-  -- Process category fallback icon separatly
-  if icon == nil then
-    local fallback_id = H.cache[cat][true]
-    H.cache[cat][name] = fallback_id
-    local t = H.cache_index[fallback_id]
-    return t[1], t[2], true
-  end
+	-- Process category fallback icon separatly
+	if icon == nil then
+		local fallback_id = H.cache[cat][true]
+		H.cache[cat][name] = fallback_id
+		local t = H.cache_index[fallback_id]
+		return t[1], t[2], true
+	end
 
-  -- Compute/ensure cache index
-  local id = (H.cache_index_lookup[hl] or {})[icon]
-  if id == nil then
-    -- Add new unique 'icon-hl'
-    table.insert(H.cache_index, { icon, hl })
-    id = #H.cache_index
+	-- Compute/ensure cache index
+	local id = (H.cache_index_lookup[hl] or {})[icon]
+	if id == nil then
+		-- Add new unique 'icon-hl'
+		table.insert(H.cache_index, { icon, hl })
+		id = #H.cache_index
 
-    -- Add corresponding lookup entry
-    local hl_icons = H.cache_index_lookup[hl] or {}
-    hl_icons[icon] = id
-    H.cache_index_lookup[hl] = hl_icons
-  end
+		-- Add corresponding lookup entry
+		local hl_icons = H.cache_index_lookup[hl] or {}
+		hl_icons[icon] = id
+		H.cache_index_lookup[hl] = hl_icons
+	end
 
-  -- Add to cache and return result tuple
-  H.cache[cat][name] = id
-  return icon, hl, false
+	-- Add to cache and return result tuple
+	H.cache[cat][name] = id
+	return icon, hl, false
 end
 
 -- Getters --------------------------------------------------------------------
 H.get_impl = {
-  default = function(name) H.error(vim.inspect(name) .. ' is not a supported category.') end,
-  directory = function(name) return H.directory_icons[name] end,
-  extension = function(name)
-    -- Built-in extensions
-    local icon_data = H.extension_icons[name]
-    if type(icon_data) == 'string' then return MiniIcons.get('filetype', icon_data) end
-    if icon_data ~= nil then return icon_data end
+	default = function(name)
+		H.error(vim.inspect(name) .. " is not a supported category.")
+	end,
+	directory = function(name)
+		return H.directory_icons[name]
+	end,
+	extension = function(name)
+		-- Built-in extensions
+		local icon_data = H.extension_icons[name]
+		if type(icon_data) == "string" then
+			return MiniIcons.get("filetype", icon_data)
+		end
+		if icon_data ~= nil then
+			return icon_data
+		end
 
-    -- Parts of complex extension (if can be recognized)
-    local dot = string.find(name, '%..')
-    while dot ~= nil do
-      local ext = name:sub(dot + 1)
-      if H.extension_icons[ext] or MiniIcons.config.extension[ext] then return MiniIcons.get('extension', ext) end
-      dot = string.find(name, '%..', dot + 1)
-    end
+		-- Parts of complex extension (if can be recognized)
+		local dot = string.find(name, "%..")
+		while dot ~= nil do
+			local ext = name:sub(dot + 1)
+			if H.extension_icons[ext] or MiniIcons.config.extension[ext] then
+				return MiniIcons.get("extension", ext)
+			end
+			dot = string.find(name, "%..", dot + 1)
+		end
 
-    -- Fall back to built-in filetype matching using generic filename
-    local ft = H.filetype_match('aaa.' .. name)
-    if ft ~= nil then return MiniIcons.get('filetype', ft) end
-  end,
-  file = function(name)
-    local basename = H.fs_basename(name)
+		-- Fall back to built-in filetype matching using generic filename
+		local ft = H.filetype_match("aaa." .. name)
+		if ft ~= nil then
+			return MiniIcons.get("filetype", ft)
+		end
+	end,
+	file = function(name)
+		local basename = H.fs_basename(name)
 
-    -- User configured file names
-    if MiniIcons.config.file[basename] ~= nil and name ~= basename then return MiniIcons.get('file', basename) end
+		-- User configured file names
+		if MiniIcons.config.file[basename] ~= nil and name ~= basename then
+			return MiniIcons.get("file", basename)
+		end
 
-    -- Built-in file names
-    local icon_data = H.file_icons[basename]
-    if type(icon_data) == 'string' then return MiniIcons.get('filetype', icon_data) end
-    -- - Style icon based on the basename and not full name
-    if icon_data ~= nil then return H.style_icon(icon_data.glyph, basename), icon_data.hl end
+		-- Built-in file names
+		local icon_data = H.file_icons[basename]
+		if type(icon_data) == "string" then
+			return MiniIcons.get("filetype", icon_data)
+		end
+		-- - Style icon based on the basename and not full name
+		if icon_data ~= nil then
+			return H.style_icon(icon_data.glyph, basename), icon_data.hl
+		end
 
-    -- Basename extensions. Prefer this before `vim.filetype.match()` for speed
-    -- (as the latter is slow-ish; like 0.1 ms in Neovim<0.11)
-    local dot = string.find(basename, '%..', 2)
-    if dot ~= nil then
-      local ext = basename:sub(dot + 1):lower()
-      if MiniIcons.config.use_file_extension(ext, name) == true then
-        local icon, hl, is_default = MiniIcons.get('extension', ext)
-        if not is_default then return icon, hl end
-      end
-    end
+		-- Basename extensions. Prefer this before `vim.filetype.match()` for speed
+		-- (as the latter is slow-ish; like 0.1 ms in Neovim<0.11)
+		local dot = string.find(basename, "%..", 2)
+		if dot ~= nil then
+			local ext = basename:sub(dot + 1):lower()
+			if MiniIcons.config.use_file_extension(ext, name) == true then
+				local icon, hl, is_default = MiniIcons.get("extension", ext)
+				if not is_default then
+					return icon, hl
+				end
+			end
+		end
 
-    -- Fall back to built-in filetype matching with full supplied name (matters
-    -- when full path is supplied to match complex filetype patterns)
-    local ft = H.filetype_match(name)
-    if ft ~= nil then return MiniIcons.get('filetype', ft) end
-  end,
-  filetype = function(name) return H.filetype_icons[name] end,
-  lsp = function(name) return H.lsp_icons[name] end,
-  os = function(name) return H.os_icons[name] end,
+		-- Fall back to built-in filetype matching with full supplied name (matters
+		-- when full path is supplied to match complex filetype patterns)
+		local ft = H.filetype_match(name)
+		if ft ~= nil then
+			return MiniIcons.get("filetype", ft)
+		end
+	end,
+	filetype = function(name)
+		return H.filetype_icons[name]
+	end,
+	lsp = function(name)
+		return H.lsp_icons[name]
+	end,
+	os = function(name)
+		return H.os_icons[name]
+	end,
 }
 
 H.style_icon = function(glyph, name)
-  if MiniIcons.config.style ~= 'ascii' then return glyph end
-  -- Use `vim.str_byteindex()` and `vim.fn.toupper()` for multibyte characters
-  return vim.fn.toupper(name:sub(1, vim.str_byteindex(name, 1)))
+	if MiniIcons.config.style ~= "ascii" then
+		return glyph
+	end
+	-- Use `vim.str_byteindex()` and `vim.fn.toupper()` for multibyte characters
+	return vim.fn.toupper(name:sub(1, vim.str_byteindex(name, 1)))
 end
 
 H.filetype_match = function(filename)
-  -- Ensure always present scratch buffer to be used in `vim.filetype.match()`
-  -- (needed because the function in many ambiguous cases prefers to return
-  -- nothing if there is no buffer supplied)
-  local buf_id = H.scratch_buf_id
-  if buf_id == nil or not vim.api.nvim_buf_is_valid(buf_id) then
-    buf_id = vim.api.nvim_create_buf(false, true)
-    H.set_buf_name(buf_id, 'filetype-match-scratch')
-    H.scratch_buf_id = buf_id
-  end
-  return vim.filetype.match({ filename = filename, buf = H.scratch_buf_id })
+	-- Ensure always present scratch buffer to be used in `vim.filetype.match()`
+	-- (needed because the function in many ambiguous cases prefers to return
+	-- nothing if there is no buffer supplied)
+	local buf_id = H.scratch_buf_id
+	if buf_id == nil or not vim.api.nvim_buf_is_valid(buf_id) then
+		buf_id = vim.api.nvim_create_buf(false, true)
+		H.set_buf_name(buf_id, "filetype-match-scratch")
+		H.scratch_buf_id = buf_id
+	end
+	return vim.filetype.match({ filename = filename, buf = H.scratch_buf_id })
 end
 
 -- Utilities ------------------------------------------------------------------
-H.error = function(msg) error('(mini.icons) ' .. msg, 0) end
-
-H.check_type = function(name, val, ref, allow_nil)
-  if type(val) == ref or (ref == 'callable' and vim.is_callable(val)) or (allow_nil and val == nil) then return end
-  H.error(string.format('`%s` should be %s, not %s', name, ref, type(val)))
+H.error = function(msg)
+	error("(mini.icons) " .. msg, 0)
 end
 
-H.set_buf_name = function(buf_id, name) vim.api.nvim_buf_set_name(buf_id, 'miniicons://' .. buf_id .. '/' .. name) end
+H.check_type = function(name, val, ref, allow_nil)
+	if type(val) == ref or (ref == "callable" and vim.is_callable(val)) or (allow_nil and val == nil) then
+		return
+	end
+	H.error(string.format("`%s` should be %s, not %s", name, ref, type(val)))
+end
 
-H.notify = function(msg, level_name) vim.notify('(mini.icons) ' .. msg, vim.log.levels[level_name]) end
+H.set_buf_name = function(buf_id, name)
+	vim.api.nvim_buf_set_name(buf_id, "miniicons://" .. buf_id .. "/" .. name)
+end
 
-H.fs_basename = function(x) return vim.fn.fnamemodify(x:sub(-1, -1) == '/' and x:sub(1, -2) or x, ':t') end
-if vim.loop.os_uname().sysname == 'Windows_NT' then
-  H.fs_basename = function(x)
-    local last = x:sub(-1, -1)
-    return vim.fn.fnamemodify((last == '/' or last == '\\') and x:sub(1, -2) or x, ':t')
-  end
+H.notify = function(msg, level_name)
+	vim.notify("(mini.icons) " .. msg, vim.log.levels[level_name])
+end
+
+H.fs_basename = function(x)
+	return vim.fn.fnamemodify(x:sub(-1, -1) == "/" and x:sub(1, -2) or x, ":t")
+end
+if vim.loop.os_uname().sysname == "Windows_NT" then
+	H.fs_basename = function(x)
+		local last = x:sub(-1, -1)
+		return vim.fn.fnamemodify((last == "/" or last == "\\") and x:sub(1, -2) or x, ":t")
+	end
 end
 
 -- Initialize cache right away to allow using `get()` without `setup()`
