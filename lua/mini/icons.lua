@@ -1627,7 +1627,7 @@ H.filetype_icons = {
   rapid                  = { glyph = '󰫿', hl = 'MiniIconsCyan'   },
   rasi                   = { glyph = '󰫿', hl = 'MiniIconsOrange' },
   ratpoison              = { glyph = '󰒓', hl = 'MiniIconsGreen'  },
-  rbs                    = { glyph = '󰁯', hl = 'MiniIconsBlue'   },
+  rbs                    = { glyph = '', hl = 'MiniIconsGrey'   },
   rc                     = { glyph = '󰒓', hl = 'MiniIconsCyan'   },
   rcs                    = { glyph = '󰫿', hl = 'MiniIconsYellow' },
   rcslog                 = { glyph = '󰷐', hl = 'MiniIconsBlue'   },
