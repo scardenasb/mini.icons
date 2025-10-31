@@ -1002,6 +1002,7 @@ H.file_icons = {
   ['.rgignore']        = { glyph = '󰒓', hl = 'MiniIconsYellow' },
   ['.vscodeignore']    = { glyph = '', hl = 'MiniIconsAzure' },
   ['.env']             = { glyph = '', hl = 'MiniIconsYellow' },
+  ['*.yml']            = { glyph = '󰒓', hl = 'MiniIconsGrey' },
   ['.rubocop.yml']     = { glyph = '', hl = 'MiniIconsYellow' },
 }
 
