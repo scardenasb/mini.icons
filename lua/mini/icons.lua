@@ -918,6 +918,10 @@ H.extension_icons = {
   xltm = { glyph = '󱎏', hl = 'MiniIconsGreen'  },
   xltx = { glyph = '󱎏', hl = 'MiniIconsGreen'  },
 
+  -- Config
+  yml = { glyph = '󰈙', hl = 'MiniIconsGrey' },
+  key = { glyph = '󰌆', hl = 'MiniIconsGrey' },
+
   ['code-snippets'] = 'json',
 }
 
