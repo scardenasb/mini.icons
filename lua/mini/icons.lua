@@ -1412,7 +1412,7 @@ H.filetype_icons = {
   kdl                    = { glyph = '󰫸', hl = 'MiniIconsGrey'   },
   kivy                   = { glyph = '󰫸', hl = 'MiniIconsBlue'   },
   kix                    = { glyph = '󰫸', hl = 'MiniIconsRed'    },
-  kotlin                 = { glyph = '󱈙', hl = 'MiniIconsBlue'   },
+  kotlin                 = { glyph = '󱈙', hl = {fg='#7F52FF'} },
   krl                    = { glyph = '󰚩', hl = 'MiniIconsGrey'   },
   kscript                = { glyph = '󰫸', hl = 'MiniIconsGrey'   },
   kwt                    = { glyph = '󰫸', hl = 'MiniIconsOrange' },
