@@ -1111,7 +1111,7 @@ H.filetype_icons = {
   btm                    = { glyph = '󰫯', hl = 'MiniIconsGreen'  },
   bzl                    = { glyph = '', hl = 'MiniIconsGreen'  },
   bzr                    = { glyph = '󰜘', hl = 'MiniIconsRed'    },
-  c                      = { glyph = '', hl = 'MiniIconsGrey'   },
+  c                      = { glyph = '', hl = 'MiniIconsBlue'   },
   cabal                  = { glyph = '󰲒', hl = 'MiniIconsBlue'   },
   cabalconfig            = { glyph = '󰒓', hl = 'MiniIconsGrey'   },
   cabalproject           = { glyph = '󰫰', hl = 'MiniIconsBlue'   },
