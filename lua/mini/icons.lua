@@ -1310,7 +1310,7 @@ H.filetype_icons = {
     gn                       = { glyph = '󰫴', hl = 'MiniIconsGrey' },
     gnash                    = { glyph = '󰒓', hl = 'MiniIconsGreen' },
     gnuplot                  = { glyph = '󰺒', hl = 'MiniIconsPurple' },
-    go                       = { glyph = '', hl = 'MiniIconsCyan' },
+    go                       = { glyph = '', hl = 'MiniIconsLightBlue' },
     goaccess                 = { glyph = '󰫴', hl = 'MiniIconsPurple' },
     godoc                    = { glyph = '󰟓', hl = 'MiniIconsOrange' },
     gomod                    = { glyph = '󰟓', hl = 'MiniIconsAzure' },
