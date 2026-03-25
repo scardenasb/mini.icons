@@ -1190,6 +1190,7 @@ H.filetype_icons = {
     d                        = { glyph = '', hl = 'MiniIconsGreen' },
     dafny                    = { glyph = '󰫱', hl = 'MiniIconsYellow' },
     dart                     = { glyph = '', hl = 'MiniIconsBlue' },
+    db                       = { glyph = '', hl = 'MiniIconsWhite' },
     datascript               = { glyph = '󰫱', hl = 'MiniIconsGreen' },
     dcd                      = { glyph = '󰫱', hl = 'MiniIconsCyan' },
     dcl                      = { glyph = '󰫱', hl = 'MiniIconsAzure' },
