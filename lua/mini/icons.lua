@@ -1543,7 +1543,7 @@ H.filetype_icons = {
     ocaml                    = { glyph = '', hl = 'MiniIconsOrange' },
     occam                    = { glyph = '󱦗', hl = 'MiniIconsGrey' },
     octave                   = { glyph = '󱥸', hl = 'MiniIconsBlue' },
-    odin                     = { glyph = '󰮔', hl = 'MiniIconsBlue' },
+    odin                     = { glyph = '', hl = 'MiniIconsBlue' },
     omnimark                 = { glyph = '󰫼', hl = 'MiniIconsPurple' },
     ondir                    = { glyph = '󰫼', hl = 'MiniIconsCyan' },
     opam                     = { glyph = '󰫼', hl = 'MiniIconsBlue' },
