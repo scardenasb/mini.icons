@@ -1,4 +1,4 @@
-<p align="center"> <img src="https://github.com/nvim-mini/assets/blob/main/logo-2/logo-icons_readme.png?raw=true" alt="mini.icons" style="max-width:100%;border:solid 2px"/> </p>
+<p align="center"> <img src="https://github.com/nvim-mini/assets/blob/main/logo-3/logo-mini-module-icons.svg?raw=true" alt="mini.icons" style="max-width:100%;border:solid 2px"/> </p>
 
 ### Icon provider
 
@@ -9,15 +9,17 @@ See more details in [Features](#features) and [Documentation](doc/mini-icons.txt
 > [!NOTE]
 > This was previously hosted at a personal `echasnovski` GitHub account. It was transferred to a dedicated organization to improve long term project stability. See more details [here](https://github.com/nvim-mini/mini.nvim/discussions/1970).
 
-⦿ This is a part of [mini.nvim](https://github.com/nvim-mini/mini.nvim) library. Please use [this link](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-icons.md) if you want to mention this module.
+⦿ This is a part of [mini.nvim](https://nvim-mini.org/mini.nvim) library. Please use [this link](https://nvim-mini.org/mini.nvim/readmes/mini-icons) if you want to mention this module.
 
 ⦿ All contributions (issues, pull requests, discussions, etc.) are done inside of 'mini.nvim'.
 
-⦿ See the repository page to learn about common design principles and configuration recipes.
+⦿ See [whole library documentation](https://nvim-mini.org/mini.nvim/doc/mini-nvim) to learn about general design principles, disable/configuration recipes, and more.
+
+⦿ See [MiniMax](https://nvim-mini.org/MiniMax) for a full config example that uses this module.
 
 ---
 
-If you want to help this project grow but don't know where to start, check out [contributing guides of 'mini.nvim'](https://github.com/nvim-mini/mini.nvim/blob/main/CONTRIBUTING.md) or leave a Github star for 'mini.nvim' project and/or any its standalone Git repositories.
+If you want to help this project grow but don't know where to start, check out [contributing guides of 'mini.nvim'](https://nvim-mini.org/mini.nvim/CONTRIBUTING) or leave a Github star for 'mini.nvim' project and/or any its standalone Git repositories.
 
 ## Demo
 
@@ -41,19 +43,15 @@ If you want to help this project grow but don't know where to start, check out [
 
 - Mocking methods of 'nvim-tree/nvim-web-devicons' for better integrations with plugins outside 'mini.nvim'. See `:h MiniIcons.mock_nvim_web_devicons()`.
 
-- Tweaking built-in maps for "LSP kind" to include icons. In particular, this makes ['mini.completion'](https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-completion.md) use icons in LSP step. See `:h MiniIcons.tweak_lsp_kind()`.
+- Tweaking built-in maps for "LSP kind" to include icons. In particular, this makes ['mini.completion'](https://nvim-mini.org/mini.nvim/readmes/mini-completion) use icons in LSP step. See `:h MiniIcons.tweak_lsp_kind()`.
 
 Notes:
 
 - It is not a goal to become a collection of icons for as much use cases as possible. There are specific criteria for icon data to be included as built-in in each category (see `:h MiniIcons.get()`). The main supported category is "filetype".
 
-Recommendations for plugin authors using 'mini.icons' as a dependency:
+For more information see these parts of help:
 
-- Check if `_G.MiniIcons` table is present (which means that user explicitly enabled 'mini.icons') and provide icons only if it is.
-
-- Use `MiniIcons.get()` function to get icon string and more data about it.
-
-- For file icons prefer using full path instead of relative or only basename. It makes a difference if path matches pattern that uses parent directories. The `:h MiniIcons.config` has an example of that.
+- `:h MiniIcons-in-other-plugins` (for plugin authors)
 
 ## Dependencies
 
@@ -80,59 +78,73 @@ There are two branches to install from:
 Here are code snippets for some common installation methods (use only one):
 
 <details>
-<summary>With <a href="https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-deps.md">mini.deps</a></summary>
+<summary><b>(Recommended)</b> With <a href="https://neovim.io/doc/user/helptag.html?tag=vim.pack">vim.pack</a> (on Neovim 0.12 and newer)</summary>
 
-- 'mini.nvim' library:
+**Full library**
 
-    | Branch | Code snippet                                  |
-    |--------|-----------------------------------------------|
-    | Main   | *Follow recommended ‘mini.deps’ installation* |
-    | Stable | *Follow recommended ‘mini.deps’ installation* |
+Follow ['mini.nvim' installation](https://nvim-mini.org/mini.nvim#installation).
 
-- Standalone plugin:
+**Standalone plugin**
 
-    | Branch | Code snippet                                                    |
-    |--------|-----------------------------------------------------------------|
-    | Main   | `add(‘nvim-mini/mini.icons’)`                                   |
-    | Stable | `add({ source = ‘nvim-mini/mini.icons’, checkout = ‘stable’ })` |
+Main branch:
+
+```lua
+vim.pack.add({ 'https://github.com/nvim-mini/mini.icons' })
+```
+
+Stable branch:
+
+```lua
+vim.pack.add({
+  { src = 'https://github.com/nvim-mini/mini.icons', version = 'stable' },
+})
+```
+
+</details>
+
+<details>
+<summary>With <a href="https://nvim-mini.org/mini.nvim/readmes/mini-deps">mini.deps</a> (before Neovim 0.12)</summary>
+
+**Full library**
+
+Follow [recommended 'mini.deps' installation](https://nvim-mini.org/mini.nvim/readmes/mini-deps#installation).
+
+**Standalone plugin**:
+
+Main branch:
+
+```lua
+add('nvim-mini/mini.icons')
+```
+
+Stable branch:
+
+```lua
+add({ source = 'nvim-mini/mini.icons', checkout = 'stable' })
+```
 
 </details>
 
 <details>
 <summary>With <a href="https://github.com/folke/lazy.nvim">folke/lazy.nvim</a></summary>
 
-- 'mini.nvim' library:
+**Full library**
 
-    | Branch | Code snippet                                  |
-    |--------|-----------------------------------------------|
-    | Main   | `{ 'nvim-mini/mini.nvim', version = false },` |
-    | Stable | `{ 'nvim-mini/mini.nvim', version = '*' },`   |
+Follow ['mini.nvim' installation](https://nvim-mini.org/mini.nvim#installation).
 
-- Standalone plugin:
+**Standalone plugin**
 
-    | Branch | Code snippet                                   |
-    |--------|------------------------------------------------|
-    | Main   | `{ 'nvim-mini/mini.icons', version = false },` |
-    | Stable | `{ 'nvim-mini/mini.icons', version = '*' },`   |
+Main branch:
 
-</details>
+```lua
+{ 'nvim-mini/mini.icons', version = false },
+```
 
-<details>
-<summary>With <a href="https://github.com/junegunn/vim-plug">junegunn/vim-plug</a></summary>
+Stable branch:
 
-- 'mini.nvim' library:
-
-    | Branch | Code snippet                                         |
-    |--------|------------------------------------------------------|
-    | Main   | `Plug 'nvim-mini/mini.nvim'`                         |
-    | Stable | `Plug 'nvim-mini/mini.nvim', { 'branch': 'stable' }` |
-
-- Standalone plugin:
-
-    | Branch | Code snippet                                          |
-    |--------|-------------------------------------------------------|
-    | Main   | `Plug 'nvim-mini/mini.icons'`                         |
-    | Stable | `Plug 'nvim-mini/mini.icons', { 'branch': 'stable' }` |
+```lua
+{ 'nvim-mini/mini.icons', version = '*' },
+```
 
 </details>
 
