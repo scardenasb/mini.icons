@@ -536,33 +536,41 @@ end
 MiniIcons.mock_nvim_web_devicons = function()
 	local M = {}
 
-  -- Main functions which get icon and highlight group
-  local default_global
-  M.get_icon = function(name, ext, opts)
-    -- Preferring 'name' first leads to a slightly different behavior compared to
-    -- the original in case both `name` and `ext` is supplied:
-    -- - Original: try exact `name`, then `ext`, then extensions in `name`.
-    -- - This: use 'file' category and ignore `ext` completely.
-    -- In practice this seems like a better choice because it accounts for
-    -- special file names at the cost of ignoring `ext` if it conflicts with
-    -- `name` (which rarely happens) and very small overhead of recomputing
-    -- extension (which assumed to already be computed by the caller).
-    local is_file = type(name) == 'string'
-    local category = is_file and 'file' or 'extension'
-    local icon, hl, is_default = MiniIcons.get(category, is_file and name or ext)
-    local use_default = (opts or {}).default
-    if use_default == nil then use_default = default_global end
-    if is_default and not use_default then return end
-    return icon, hl
-  end
+	-- Main functions which get icon and highlight group
+	local default_global
+	M.get_icon = function(name, ext, opts)
+		-- Preferring 'name' first leads to a slightly different behavior compared to
+		-- the original in case both `name` and `ext` is supplied:
+		-- - Original: try exact `name`, then `ext`, then extensions in `name`.
+		-- - This: use 'file' category and ignore `ext` completely.
+		-- In practice this seems like a better choice because it accounts for
+		-- special file names at the cost of ignoring `ext` if it conflicts with
+		-- `name` (which rarely happens) and very small overhead of recomputing
+		-- extension (which assumed to already be computed by the caller).
+		local is_file = type(name) == "string"
+		local category = is_file and "file" or "extension"
+		local icon, hl, is_default = MiniIcons.get(category, is_file and name or ext)
+		local use_default = (opts or {}).default
+		if use_default == nil then
+			use_default = default_global
+		end
+		if is_default and not use_default then
+			return
+		end
+		return icon, hl
+	end
 
-  M.get_icon_by_filetype = function(ft, opts)
-    local icon, hl, is_default = MiniIcons.get('filetype', ft)
-    local use_default = (opts or {}).default
-    if use_default == nil then use_default = default_global end
-    if is_default and not use_default then return end
-    return icon, hl
-  end
+	M.get_icon_by_filetype = function(ft, opts)
+		local icon, hl, is_default = MiniIcons.get("filetype", ft)
+		local use_default = (opts or {}).default
+		if use_default == nil then
+			use_default = default_global
+		end
+		if is_default and not use_default then
+			return
+		end
+		return icon, hl
+	end
 
 	-- Use default colors of default icon (#6d8086 and 66) by default
 	local get_hl_data = function(...)
@@ -657,14 +665,18 @@ MiniIcons.mock_nvim_web_devicons = function()
 		return {}
 	end
 
-  -- Should be no need in the these. Suggest using `MiniIcons.setup()`.
-  M.has_loaded = function() return true end
-  M.refresh = function() end
-  M.set_default_icon = function() end
-  M.set_icon = function() end
-  M.set_icon_by_filetype = function() end
-  M.set_up_highlights = function() end
-  M.setup = function(opts) default_global = (opts or {}).default end
+	-- Should be no need in the these. Suggest using `MiniIcons.setup()`.
+	M.has_loaded = function()
+		return true
+	end
+	M.refresh = function() end
+	M.set_default_icon = function() end
+	M.set_icon = function() end
+	M.set_icon_by_filetype = function() end
+	M.set_up_highlights = function() end
+	M.setup = function(opts)
+		default_global = (opts or {}).default
+	end
 
 	-- Mock. Prefer `package.preload` as it seems to be a better practice.
 	local modname = "nvim-web-devicons"
@@ -1335,6 +1347,7 @@ H.filetype_icons = {
   goaccess               = { glyph = '󰫴', hl = 'MiniIconsPurple' },
   godoc                  = { glyph = '󰟓', hl = 'MiniIconsOrange' },
   gomod                  = { glyph = '󰟓', hl = 'MiniIconsAzure'  },
+  goose                  = { glyph = '󰇥󰦪', hl = 'MiniIconsGrey'   },
   gosum                  = { glyph = '󰟓', hl = 'MiniIconsCyan'   },
   gowork                 = { glyph = '󰟓', hl = 'MiniIconsPurple' },
   gp                     = { glyph = '󰫴', hl = 'MiniIconsCyan'   },
@@ -2190,13 +2203,13 @@ H.cache_get = function(cat, name)
 end
 
 H.cache_set = function(cat, name, icon, hl)
-  -- Process category fallback icon separately
-  if icon == nil then
-    local fallback_id = H.cache[cat][true]
-    H.cache[cat][name] = fallback_id
-    local t = H.cache_index[fallback_id]
-    return t[1], t[2], true
-  end
+	-- Process category fallback icon separately
+	if icon == nil then
+		local fallback_id = H.cache[cat][true]
+		H.cache[cat][name] = fallback_id
+		local t = H.cache_index[fallback_id]
+		return t[1], t[2], true
+	end
 
 	-- Compute/ensure cache index
 	local id = (H.cache_index_lookup[hl] or {})[icon]
@@ -2299,32 +2312,42 @@ H.get_impl = {
 	end,
 }
 
-H.str_byteindex = function(s, i) return vim.str_byteindex(s, 'utf-32', i) end
-if vim.fn.has('nvim-0.11') == 0 then H.str_byteindex = function(s, i) return vim.str_byteindex(s, i) end end
+H.str_byteindex = function(s, i)
+	return vim.str_byteindex(s, "utf-32", i)
+end
+if vim.fn.has("nvim-0.11") == 0 then
+	H.str_byteindex = function(s, i)
+		return vim.str_byteindex(s, i)
+	end
+end
 
 H.style_icon = function(glyph, name)
-  if MiniIcons.config.style ~= 'ascii' then return glyph end
-  -- Use `vim.str_byteindex()` and `vim.fn.toupper()` for multibyte characters
-  return vim.fn.toupper(name:sub(1, H.str_byteindex(name, 1)))
+	if MiniIcons.config.style ~= "ascii" then
+		return glyph
+	end
+	-- Use `vim.str_byteindex()` and `vim.fn.toupper()` for multibyte characters
+	return vim.fn.toupper(name:sub(1, H.str_byteindex(name, 1)))
 end
 
 H.filetype_match = function(filename)
-  -- Ensure always present scratch buffer to be used in `vim.filetype.match()`
-  -- (needed because the function in many ambiguous cases prefers to return
-  -- nothing if there is no buffer supplied)
-  local buf_id = H.scratch_buf_id
-  if buf_id == nil or not vim.api.nvim_buf_is_loaded(buf_id) then
-    pcall(vim.api.nvim_buf_delete, buf_id, { force = true })
-    buf_id = vim.api.nvim_create_buf(false, true)
-    H.set_buf_name(buf_id, 'filetype-match-scratch')
-    H.scratch_buf_id = buf_id
-  end
+	-- Ensure always present scratch buffer to be used in `vim.filetype.match()`
+	-- (needed because the function in many ambiguous cases prefers to return
+	-- nothing if there is no buffer supplied)
+	local buf_id = H.scratch_buf_id
+	if buf_id == nil or not vim.api.nvim_buf_is_loaded(buf_id) then
+		pcall(vim.api.nvim_buf_delete, buf_id, { force = true })
+		buf_id = vim.api.nvim_create_buf(false, true)
+		H.set_buf_name(buf_id, "filetype-match-scratch")
+		H.scratch_buf_id = buf_id
+	end
 
-  -- `vim.filetype.match` can error for relative path when cwd does not exist
-  local ok, ft = pcall(vim.filetype.match, { filename = filename, buf = H.scratch_buf_id })
-  if ok then return ft end
-  ok, ft = pcall(vim.filetype.match, { filename = '~/' .. filename, buf = H.scratch_buf_id })
-  return ok and ft or nil
+	-- `vim.filetype.match` can error for relative path when cwd does not exist
+	local ok, ft = pcall(vim.filetype.match, { filename = filename, buf = H.scratch_buf_id })
+	if ok then
+		return ft
+	end
+	ok, ft = pcall(vim.filetype.match, { filename = "~/" .. filename, buf = H.scratch_buf_id })
+	return ok and ft or nil
 end
 
 -- Utilities ------------------------------------------------------------------
@@ -2343,12 +2366,14 @@ H.set_buf_name = function(buf_id, name)
 	vim.api.nvim_buf_set_name(buf_id, "miniicons://" .. buf_id .. "/" .. name)
 end
 
-H.fs_basename = function(x) return vim.fn.fnamemodify(x:sub(-1, -1) == '/' and x:sub(1, -2) or x, ':t') end
-if vim.uv.os_uname().sysname == 'Windows_NT' then
-  H.fs_basename = function(x)
-    local last = x:sub(-1, -1)
-    return vim.fn.fnamemodify((last == '/' or last == '\\') and x:sub(1, -2) or x, ':t')
-  end
+H.fs_basename = function(x)
+	return vim.fn.fnamemodify(x:sub(-1, -1) == "/" and x:sub(1, -2) or x, ":t")
+end
+if vim.uv.os_uname().sysname == "Windows_NT" then
+	H.fs_basename = function(x)
+		local last = x:sub(-1, -1)
+		return vim.fn.fnamemodify((last == "/" or last == "\\") and x:sub(1, -2) or x, ":t")
+	end
 end
 
 -- Initialize cache right away to allow using `get()` without `setup()`
