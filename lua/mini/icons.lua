@@ -1105,7 +1105,7 @@ H.filetype_icons = {
   autodoc                = { glyph = '󰪶', hl = 'MiniIconsGreen'  },
   autohotkey             = { glyph = '󰫮', hl = 'MiniIconsYellow' },
   autoit                 = { glyph = '󰫮', hl = 'MiniIconsCyan'   },
-  automake               = { glyph = '󱁤', hl = 'MiniIconsPurple' },
+  automake               = { glyph = '', hl = 'MiniIconsPurple' },
   autopkgtest            = { glyph = '󰣚', hl = 'MiniIconsRed'    },
   ave                    = { glyph = '󰫮', hl = 'MiniIconsGrey'   },
   avra                   = { glyph = '', hl = 'MiniIconsPurple' },
